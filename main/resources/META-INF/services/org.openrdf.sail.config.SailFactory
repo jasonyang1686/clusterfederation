@@ -1,0 +1,2 @@
+org.openrdf.sail.federation.config.FederationFactory
+org.openrdf.sail.federation.config.ClusterFederationFactory
