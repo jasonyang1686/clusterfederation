@@ -147,7 +147,7 @@ public class ComparisonFederationQueryTest {
 					con123456.close();
 
 			
-				}
+				} 
 			}
 
 }
