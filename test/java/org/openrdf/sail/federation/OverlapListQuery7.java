@@ -282,7 +282,7 @@ public class OverlapListQuery7 {
 	//Delete data
 	   //   at.deleteData(rowID, rowValue);
 	//Scan data	
-		  Iterator<Map.Entry<Key,Value>> iterator = sc.iterator();
+		  Iterator<Map.Entry<Key,Value>> iterator = sc.iterator(); 
 	//	  Set<String> result = new HashSet<String>();
 		  
 		  while (iterator.hasNext()) {
