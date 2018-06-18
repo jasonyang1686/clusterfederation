@@ -107,7 +107,7 @@ public class CreateURITableTest {
 	}
 	final long end = System.currentTimeMillis();
 	
-	System.out.println((end-start));
+	System.out.println((end-start)); 
 
 	}
 		 
