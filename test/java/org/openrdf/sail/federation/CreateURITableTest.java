@@ -23,22 +23,58 @@ import java.util.Map.Entry;
 
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
+import org.apache.accumulo.core.client.BatchWriter;
+import org.apache.accumulo.core.client.Connector;
+import org.apache.accumulo.core.client.Instance;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
+import org.apache.accumulo.core.client.ZooKeeperInstance;
 import org.apache.accumulo.core.data.Key;
+import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.security.Authorizations;
+import org.apache.hadoop.io.Text;
 
 /**
  *
  * @author vagrant
  */
 public class CreateURITableTest {
+	
+	static public BatchWriter createWriter(Connector conn, String tableName) throws AccumuloException, AccumuloSecurityException, TableNotFoundException{
+		long memBuf = 1000000L; // bytes to store before sending a batch
+		long timeout = 1000L; // milliseconds to wait before sending
+		int numThreads = 10;
+		BatchWriter writer =
+		    conn.createBatchWriter(tableName, memBuf, timeout, numThreads);		
+		return writer;
+	}
+	
+	static public void addURIs(List<String> URIs, Connector conn, String tableName) throws AccumuloException, AccumuloSecurityException, TableNotFoundException{
+		
+		  BatchWriter writer = createWriter(conn, tableName);
+		  for(int i=0;i<URIs.size();i++){
+		  Text rowID = new Text(URIs.get(i));
+		  Text colFam = new Text("   ");
+		  Text colQual = new Text("   ");
+	//	  ColumnVisibility colVis = new ColumnVisibility("public");
+		  long timestamp = System.currentTimeMillis();
+
+		  Value temp_value = new Value("2".getBytes());
+
+		  Mutation mutation = new Mutation(rowID);
+		  mutation.put(colFam, colQual, timestamp, temp_value);		  
+		  writer.addMutation(mutation);      
+		  }
+		  writer.close();
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
 	String instanceName = "dev";
    String tableURI ="URI_index";
 	String tableSPO = "rya_spo";
-	String tablePO ="rya_po";
 	String tableOSP ="rya_osp";
 	
 
@@ -49,65 +85,63 @@ public class CreateURITableTest {
 
 	String passWord="root";
 	
+   List<String> list = new ArrayList<String>();
    
-   Iterator<Entry<Key, Value>> iterator1;
-   Iterator<Entry<Key, Value>> iterator2;
 
-	OverlapList ol1 = new OverlapList(zkServer1,instanceName);
-	OverlapList ol2 = new OverlapList(zkServer2,instanceName);
-	OverlapList olURI = new OverlapList(zkServer1,instanceName); 
+
+   Instance inst1 = new ZooKeeperInstance(instanceName, zkServer1);
+	Connector conn1 = inst1.getConnector(userName, passWord);
 	
+   Instance inst2 = new ZooKeeperInstance(instanceName, zkServer2);
+	Connector conn2 = inst2.getConnector(userName, passWord);
+	
+	
+
+	Scanner scan2SPO =  conn2.createScanner(tableSPO, new Authorizations());
+	Scanner scan2OSP =  conn2.createScanner(tableOSP, new Authorizations());
+	Scanner scan1SPO =  conn1.createScanner(tableSPO, new Authorizations());
+	Scanner scan1OSP =  conn1.createScanner(tableOSP, new Authorizations());
+	
+   Iterator<Entry<Key, Value>> iterator1SPO = scan1SPO.iterator();
+   Iterator<Entry<Key, Value>> iterator1OSP = scan1OSP.iterator();
+   Iterator<Entry<Key, Value>> iterator2SPO = scan2SPO.iterator();
+   Iterator<Entry<Key, Value>> iterator2OSP = scan2OSP.iterator();
+   
 	final long start = System.currentTimeMillis();
-	try {
-	   ol1.getConnection(userName, passWord);
-      ol1.selectTable(tableSPO);
-	   ol2.getConnection(userName, passWord);
-      ol2.selectTable(tableSPO);
-	   olURI.getConnection(userName, passWord);
-      olURI.selectTable(tableURI);
-      
-      Scanner sc1;
-		sc1 = ol1.createScan();
-      iterator1 = sc1.iterator();
-      
-      Scanner sc2;
-		sc2 = ol2.createScan();
-      iterator2 = sc2.iterator();
       
       
- 	  while (iterator1.hasNext()) {
-		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator1.next();
-		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
-         olURI.addData(pattern[0].replaceAll("\\x01\\x03",""), "1");
-         olURI.addData(pattern[2].replaceAll("\\x01\\x03",""), "1");
-		  }
- 	  
- 	  while (iterator2.hasNext()) {
-		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator2.next();
-		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
-        olURI.addData(pattern[0].replaceAll("\\x01\\x03",""), "1");
-        olURI.addData(pattern[2].replaceAll("\\x01\\x03",""), "1");
-		  }
-	}
-	catch (TableNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	catch (AccumuloException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	catch (AccumuloSecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	catch (TableExistsException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+   	  while (iterator1SPO.hasNext()) {
+  		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator1SPO.next();
+  		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
+          list.add(pattern[0]);
+  		  }
+   	  
+   	  
+  	  
+   	  while (iterator1OSP.hasNext()) {
+    		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator1OSP.next();
+    		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
+            list.add(pattern[0]);
+    		  }
+   	  
+   	  while (iterator2SPO.hasNext()) {
+    		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator2SPO.next();
+    		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
+            list.add(pattern[0]);
+    		  }
+   	  
+   	  while (iterator2OSP.hasNext()) {
+    		   Entry<Key, org.apache.accumulo.core.data.Value> entry = iterator2OSP.next();
+    		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
+            list.add(pattern[0]);
+    		  }
+	
+   System.out.println("size: "+list.size());	  
+   addURIs(list,conn1,tableURI);
+   	  
 	final long end = System.currentTimeMillis();
 	
-	System.out.println((end-start)); 
+	System.out.println((end-start));
 
 	}
 		 
