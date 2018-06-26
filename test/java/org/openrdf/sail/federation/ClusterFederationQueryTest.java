@@ -33,7 +33,7 @@ import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.repository.http.config.HTTPRepositoryConfig;
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailRepositoryConnection;
+import org.openrdf.repository.sail.SailRepositoryConnection; 
 
 /**
  *
