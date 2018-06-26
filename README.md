@@ -16,10 +16,10 @@ At first we create 6 RyaAccumulo repositories on each VM via workbench and inser
 Then we run the following code:
 
 * Run CreateURITableTest.java on each cluster center
-Create IRI index table in accumulo based rya_spo and rya_osp tables.
+** Create IRI index table in accumulo based rya_spo and rya_osp tables.
 
 * Run CreateBloomFilterTest.java on each cluster center
-Create bloom filters based on IRI index tables and save them in serialized files.
+** Create bloom filters based on IRI index tables and save them in serialized files.
 
 3. Run CreatNewURIIndexTest.java on each cluster center
 Create two new URI index tables on each cluster center based on the two remote bloom filter files.
