@@ -36,7 +36,7 @@ public class loadDataTimeTest {
 	String passWord="root";
 	   
    Iterator<Entry<Key, Value>> iterator1;
-   Iterator<Entry<Key, Value>> iterator2;
+   Iterator<Entry<Key, Value>> iterator2; 
 
 	OverlapList ol1 = new OverlapList(zkServer1,instanceName);
    ol1.getConnection(userName, passWord);
