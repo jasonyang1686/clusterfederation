@@ -56,6 +56,7 @@ package: org.openrdf.sail.federation
 
 package: org.openrdf.sail.federation.config
 * **ClusterFederationConfig.java**
+
   Similar as *FederationConfig.java*, extended from *SailImplConfigBase*, we modified *NAMESPACE* in line 74:
   
   ```java
@@ -70,16 +71,19 @@ package: org.openrdf.sail.federation.config
 * **ClusterFederationFactory.java**
 
   Similar as *FederationFactory.java*, implemented from *SailFactory*, we added two member variables in line 38 and 39:
+  
 ```java
 public static final String SAIL_TYPE = "openrdf:ClusterFederation";
 private String zkServer = "localhost:2181";
 ```
   We modified *getSail* method from line 48 to 50:
+  
 ```java
 ClusterFederationConfig cfg = (ClusterFederationConfig) config;
 ClusterFederation sail = new ClusterFederation(zkServer);
 ```
   Also we override the *getConfig* method:
+  
 ```java
 	@Override
 	public SailImplConfig getConfig() {
@@ -93,7 +97,10 @@ package: src/main/resources/META-INF/services/
 * **org.openrdf.sail.config.SailFactory**
 
   Add one line at the bottom of the file:
+  
+```java  
 	org.openrdf.sail.federation.config.ClusterFederationFactory
+```
 
 Project: sesame-runtime
 
