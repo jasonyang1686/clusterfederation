@@ -14,6 +14,7 @@ package: org.openrdf.sail.federation
 * **AbstractClusterEchoWriteConnection.java**
 
   Similar as *AbstractEchoWriteConnection.java*, Extended from *AbstractClusterFederationConnection.java*,we modified construction method in line 34:
+	
   ```java
 	public AbstractClusterEchoWriteConnection(ClusterFederation federation,
 	List<RepositoryConnection> members) {
@@ -25,11 +26,12 @@ package: org.openrdf.sail.federation
 * AbstractFederationConnection.java
 * **ClusterFederation.java**
 
- Extended from Federation.java, we modified *getConnection* method in line 146 and 147:
- ```java
+  Extended from Federation.java, we modified *getConnection* method in line 146 and 147:
+ 
+  ```java
   return readOnly ? new ReadOnlyClusterConnection(this, connections)
   					: new WritableClusterConnection(this, connections);
-```
+  ```
 
 * Federation.java
 * **IntersectOverlapList.java**
@@ -38,51 +40,52 @@ package: org.openrdf.sail.federation
 * **ReadOnlyClusterConnection.java**
 
   Similar as *ReadOnlyConnection.java*, Extended from *AbstractClusterFederationConnection.java*,we modified construction method in line 15:
-```java
-public ReadOnlyClusterConnection(ClusterFederation federation,
-List<RepositoryConnection> members) {
-```
+ ```java
+ public ReadOnlyClusterConnection(ClusterFederation federation,
+ List<RepositoryConnection> members) {
+ ```
 * ReadOnlyConnection.java
 * **WritableClusterConnection.java**
 
   Similar as *WritableConnection.java*, Extended from *AbstractClusterEchoWriteConnection.java*,we modified construction method in line 39:
-```java
-public WritableClusterConnection(ClusterFederation federation,
-List<RepositoryConnection> members) throws SailException {
-```
+ ```java
+ public WritableClusterConnection(ClusterFederation federation,
+ List<RepositoryConnection> members) throws SailException {
+ ```
 * WritableConnection.java
 
 package: org.openrdf.sail.federation.config
 * **ClusterFederationConfig.java**
   Similar as *FederationConfig.java*, extended from *SailImplConfigBase*, we modified *NAMESPACE* in line 74:
- ```java
+  
+  ```java
  	public static final String NAMESPACE =
 	"http://www.openrdf.org/config/sail/clusterfederation#";
-	```
+  ```
 	and SailConfigException message in line 189:
   ```java
 	throw new SailConfigException("No cluster federation members
 	specified");
-				```
+  ```
 * **ClusterFederationFactory.java**
 
   Similar as *FederationFactory.java*, implemented from *SailFactory*, we added two member variables in line 38 and 39:
-	```java
+```java
 public static final String SAIL_TYPE = "openrdf:ClusterFederation";
 private String zkServer = "localhost:2181";
 ```
   We modified *getSail* method from line 48 to 50:
-	```java
+```java
 ClusterFederationConfig cfg = (ClusterFederationConfig) config;
 ClusterFederation sail = new ClusterFederation(zkServer);
 ```
   Also we override the *getConfig* method:
-	```java
+```java
 	@Override
 	public SailImplConfig getConfig() {
 		return new ClusterFederationConfig();
 	}
-	```
+```
 * FederationConfig.java
 * FederationFactory.java
 
