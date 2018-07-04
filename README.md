@@ -40,18 +40,20 @@ package: org.openrdf.sail.federation
 * **ReadOnlyClusterConnection.java**
 
   Similar as *ReadOnlyConnection.java*, Extended from *AbstractClusterFederationConnection.java*,we modified construction method in line 15:
- ```java
- public ReadOnlyClusterConnection(ClusterFederation federation,
- List<RepositoryConnection> members) {
- ```
+  
+  ```java
+  public ReadOnlyClusterConnection(ClusterFederation federation,
+  List<RepositoryConnection> members) {
+  ```
 * ReadOnlyConnection.java
 * **WritableClusterConnection.java**
 
   Similar as *WritableConnection.java*, Extended from *AbstractClusterEchoWriteConnection.java*,we modified construction method in line 39:
- ```java
- public WritableClusterConnection(ClusterFederation federation,
- List<RepositoryConnection> members) throws SailException {
- ```
+  
+  ```java
+  public WritableClusterConnection(ClusterFederation federation,
+  List<RepositoryConnection> members) throws SailException {
+  ```
 * WritableConnection.java
 
 package: org.openrdf.sail.federation.config
