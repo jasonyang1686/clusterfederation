@@ -20,8 +20,6 @@ package: org.openrdf.sail.federation
   List<RepositoryConnection> members) {
   ```
 * **AbstractClusterFederationConnection.java**
-
-
 * AbstractEchoWriteConnection.java
 * AbstractFederationConnection.java
 * **ClusterFederation.java**
