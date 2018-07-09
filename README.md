@@ -62,13 +62,13 @@ package: org.openrdf.sail.federation.config
   Similar as *FederationConfig.java*, extended from *SailImplConfigBase*, we modified *NAMESPACE* in line 74:
   
   ```java
- 	public static final String NAMESPACE =
-	"http://www.openrdf.org/config/sail/clusterfederation#";
+  public static final String NAMESPACE =
+ "http://www.openrdf.org/config/sail/clusterfederation#";
   ```
-	and SailConfigException message in line 189:
+  and SailConfigException message in line 189:
   ```java
-	throw new SailConfigException("No cluster federation members
-	specified");
+  throw new SailConfigException("No cluster federation members
+  specified");
   ```
 * **ClusterFederationFactory.java**
 
@@ -87,9 +87,9 @@ package: org.openrdf.sail.federation.config
   Also we override the *getConfig* method:
   
   ```java
-	@Override
-	public SailImplConfig getConfig() {
-		return new ClusterFederationConfig();
+  @Override
+  public SailImplConfig getConfig() {
+  return new ClusterFederationConfig();
 	}
   ```
 * FederationConfig.java
@@ -101,7 +101,7 @@ package: src/main/resources/META-INF/services/
   Add one line at the bottom of the file:
   
   ```java  
-	org.openrdf.sail.federation.config.ClusterFederationFactory
+  org.openrdf.sail.federation.config.ClusterFederationFactory
   ```
 
 Project: sesame-runtime
