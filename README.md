@@ -16,8 +16,8 @@ package: org.openrdf.sail.federation
   Similar as *AbstractEchoWriteConnection.java*, Extended from *AbstractClusterFederationConnection.java*,we modified construction method in line 34:
 	
   ```java
-	public AbstractClusterEchoWriteConnection(ClusterFederation federation,
-	List<RepositoryConnection> members) {
+  public AbstractClusterEchoWriteConnection(ClusterFederation federation,
+  ist<RepositoryConnection> members) {
   ```
 * **AbstractClusterFederationConnection.java**
 
@@ -63,7 +63,7 @@ package: org.openrdf.sail.federation.config
   
   ```java
   public static final String NAMESPACE =
- "http://www.openrdf.org/config/sail/clusterfederation#";
+  "http://www.openrdf.org/config/sail/clusterfederation#";
   ```
   and SailConfigException message in line 189:
   ```java
