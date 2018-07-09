@@ -17,7 +17,7 @@ package: org.openrdf.sail.federation
 	
   ```java
   public AbstractClusterEchoWriteConnection(ClusterFederation federation,
-  ist<RepositoryConnection> members) {
+  List<RepositoryConnection> members) {
   ```
 * **AbstractClusterFederationConnection.java**
 
