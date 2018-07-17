@@ -20,6 +20,16 @@ package: org.openrdf.sail.federation
   List<RepositoryConnection> members) {
   ```
 * **AbstractClusterFederationConnection.java**
+
+  We create this class based on *AbstractFederationConnection* class. We added a hashset named *includeSet* to store overlap list from a Accumulo table when the class is initialized. We also modified *getStatementsInternal* method, to replace *DistinctIteration* with our *IntersectOverlapList* in line 310 to 314:
+
+  ```java
+  if (!federation.isDistinct() && !isLocal(pred)) {
+  // Filter overlap list items
+  cursor = new IntersectOverlapList<Statement, SailException>(cursor, includeSet); }
+  ```
+  For the two parameters, cursor is an iteration which contains statement patterns and includeSet is the hashset we mentioned above which is created to filter out the statement which is not included in the overlap list.
+
 * AbstractEchoWriteConnection.java
 * AbstractFederationConnection.java
 * **ClusterFederation.java**
@@ -33,7 +43,53 @@ package: org.openrdf.sail.federation
 
 * Federation.java
 * **IntersectOverlapList.java**
+
+  We create this class based on *DistinctIteration* class in the purpose of intersecting overlap list with statement patterns. We store the list into a hashset at constructor:
+
+  ```java
+  private Set<String>includeSet;
+
+  public IntersectOverlapList(Iteration<? extends E, ? extends X> iter, Set<String> includeSet) throws X  {
+  super(iter);
+    this.includeSet=includeSet;
+  }
+  ```
+  And we created a *inIncludeSet* method, for each statement in the iteration (parameter *iter*), this boolean methodto will check whether subject or object from statement pattern is contained from overlap list:
+
+  ```java
+  private boolean inIncludeSet(E object) {
+		Resource sub =((ContextStatementImpl)(object)).getSubject();
+		Value obj = ((ContextStatementImpl)(object)).getObject();
+    if( includeSet.contains(sub.stringValue()) || includeSet.contains(obj.stringValue())){
+   	 return true; }else{ return false;}}
+  ```
+
 * **OverlapList.java**
+
+  We create overlap list and insert data into Accumulo table. This class allows users to create Accumulo tables and execute basic operations like insert or delete for certain tables based on classes from *org.apache.accumulo.core.client*. To create a new OverlapList object, you need to indicate a zoo keeper server address and Accumulo instance name as:
+
+  ```java
+  OverlapList at = new OverlapList(zkServer,instanceName);
+  ```
+  Before creating a scanner to iterate or delete data, you need to get Accumulo server conncted by giving a user name and password and table selected by giving a table name. The sample code is shown as:
+
+  ```java
+  at.getConnection(userName, passWord);
+  at.selectTable(tableName);
+  Scanner sc = at.createScan();
+  ```
+
+  You can then add items into the overlap list. Because the list is in an Accumulo table, the members of overlap list are in String type as RowIDs in the Accumulo table and also you need to give a certain RowValue for each ID.
+
+  ```java
+  at.addData(rowID, rowValue);
+  ```
+  Also we have the similar method in *deleteData* when you need to delete items from overlap list:
+
+  ```java
+  at.deleteData(rowID, rowValue);
+  ```
+
 * PrefixHashSet.java
 * **ReadOnlyClusterConnection.java**
 
