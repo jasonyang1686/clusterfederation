@@ -271,3 +271,14 @@ package:org.openrdf.workbench.command
 * SummaryServlet.java
 * TypesServlet.java
 * UpdateServlet.java
+
+### How to use
+
+There are two ways to enable cluster federation feature on openrdf. One is to replace the necessary libraries from *lib* folder to */var/lib/tomcat7/webapps/ *. Copy create.xsl and create-ClusterFederation.xsl to */var/lib/tomcat7/webapps/openrdf-workbench/transformations/ * and copy the rest three java libraries to both  */var/lib/tomcat7/webapps/openrdf-workbench/WEB-INF/lib/ * and */var/lib/tomcat7/webapps/openrdf-sesame/WEB-INF/lib/ *. Then restart your tomcat service, you can see a new cluster federation option appears on your workbench webpage.
+
+Another way is to implement cluster federation in java code. You can download openrdf-sesame source code and add our code listed above (*main* and *test* folders) to original code. To test cluster federation we created some experiments to compare the execution time of regular federation method and our cluster federation. We choose [Lehigh University Benchmark](http://swat.cse.lehigh.edu/projects/lubm/) as our benchmark dataset and test queries provided from [here](http://swat.cse.lehigh.edu/projects/lubm/queries-sparql.txt). You can reproduce our experiments by using our test codes from *test* folder.
+
+For example, after uploading dataset via workbench on each cluster center, you can run CreateURITableTest, CreateBloomFilterTest, CreateNewURIIndexTest and CreateOverlapTest sequently to generate 0-hop overlap list, then you can run NHopOverlapTest to generate N-hop overlap list in Accumulo table.
+
+After creating overlap lists on each cluster center, you can run ComparisonFederationQueryTest to calculate execution time of regular federation on the cluster coordinator. Or ClusterFederationQueryTest to calculate execution time of cluster federation. You can create your own test code and datasets to run your experiments.
+
