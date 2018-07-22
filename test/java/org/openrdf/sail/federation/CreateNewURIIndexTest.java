@@ -33,6 +33,7 @@ import org.apache.accumulo.core.client.Instance;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
@@ -78,43 +79,44 @@ public class CreateNewURIIndexTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String url31 = "smb://192.168.33.10/share/1";
-		SmbFile  file31 = new SmbFile(url31);
-      ObjectInputStream in31 = new ObjectInputStream(file31.getInputStream());
-      BloomFilter<String> instance31 = (BloomFilter)in31.readObject();
+		String url13 = "smb://192.168.33.30/share/3";
+		SmbFile  file13 = new SmbFile(url13);
+      ObjectInputStream in13 = new ObjectInputStream(file13.getInputStream());
+      BloomFilter<String> instance13 = (BloomFilter)in13.readObject();
        
-      in31.close();
+      in13.close();
   //    file3.close();
       
-		String url35 = "smb://192.168.33.50/share/5";
-		SmbFile  file35 = new SmbFile(url35);
+		String url15 = "smb://192.168.33.50/share/5";
+		SmbFile  file15 = new SmbFile(url15);
   //    FileInputStream file5 = new FileInputStream("/home/vagrant/share/5");
-      ObjectInputStream in35 = new ObjectInputStream(file35.getInputStream());
+      ObjectInputStream in15 = new ObjectInputStream(file15.getInputStream());
        
       // Method for deserialization of object
-      BloomFilter<String> instance35 = (BloomFilter)in35.readObject();
+      BloomFilter<String> instance15 = (BloomFilter)in15.readObject();
        
-      in35.close();
+      in15.close();
      
    //   file5.close();
       
 		final long start = System.currentTimeMillis();
-    
-     
+      
+
+		
      final long phase2 = System.currentTimeMillis();
     	System.out.println((phase2-start));
      
-     List<String>overlap31 = new ArrayList<String>();
-     List<String>overlap35 = new ArrayList<String>();
+     List<String>overlap13 = new ArrayList<String>();
+     List<String>overlap15 = new ArrayList<String>();
   	String instanceName = "dev";
    String tableURI ="URI_index";
-	String tableNewURI31 = "new_URI_index_31";
-	String tableNewURI35 = "new_URI_index_35";
+	String tableNewURI13 = "new_URI_index_13";
+	String tableNewURI15 = "new_URI_index_15";
 
 
 	
 
-	String zkServer3 = "192.168.33.30:2181";
+	String zkServer1 = "192.168.33.10:2181";
 
 
 	String userName="root";
@@ -123,29 +125,35 @@ public class CreateNewURIIndexTest {
 	
 
  	   
-	Instance inst3 = new ZooKeeperInstance(instanceName, zkServer3);
-	Connector conn3 = inst3.getConnector(userName, passWord);
+	Instance inst1 = new ZooKeeperInstance(instanceName, zkServer1);
+	Connector conn1 = inst1.getConnector(userName, passWord);
 	
-	Scanner scan3 =  conn3.createScanner(tableURI, new Authorizations());
+	Scanner scan1 =  conn1.createScanner(tableURI, new Authorizations());
 	
-	Iterator<Map.Entry<Key,Value>> iterator3 = scan3.iterator();
-	  while (iterator3.hasNext()) {
-		   Map.Entry<Key,Value> entry3 = iterator3.next();
-		   String key3 = entry3.getKey().getRow().toString();
-		   if(instance31.contains(key3)){
-		   	overlap31.add(key3);
+	Iterator<Map.Entry<Key,Value>> iterator1 = scan1.iterator();
+	  while (iterator1.hasNext()) {
+		   Map.Entry<Key,Value> entry1 = iterator1.next();
+		   String key1 = entry1.getKey().getRow().toString();
+		   if(instance13.contains(key1)){
+		   	overlap13.add(key1);
 		   }
-		   if(instance35.contains(key3)){
-		   	overlap35.add(key3);
+		   if(instance15.contains(key1)){
+		   	overlap15.add(key1);
 		   }
 	  }
+	   TableOperations ops = conn1.tableOperations();
+      if (!ops.exists(tableNewURI13)) {
+          ops.create(tableNewURI13);
+     }
+      if (!ops.exists(tableNewURI15)) {
+         ops.create(tableNewURI15);
+      }
+	  addURIs(overlap13,conn1,tableNewURI13);
+	  addURIs(overlap15,conn1,tableNewURI15);
 	  
-	  addURIs(overlap31,conn3,tableNewURI31);
-	  addURIs(overlap35,conn3,tableNewURI35);
-	  
-	  	final long end = System.currentTimeMillis();
-		
-	  	System.out.println((end-phase2));
+  	final long end = System.currentTimeMillis();
+	
+  	System.out.println((end-phase2));
 				
 	}
 	
