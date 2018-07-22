@@ -17,9 +17,11 @@
 package org.openrdf.sail.federation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
@@ -30,10 +32,11 @@ import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
-import org.apache.accumulo.core.security.Authorizations; 
+import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
 
 /**
@@ -51,11 +54,12 @@ public class CreateURITableTest {
 		return writer;
 	}
 	
-	static public void addURIs(List<String> URIs, Connector conn, String tableName) throws AccumuloException, AccumuloSecurityException, TableNotFoundException{
+	static public void addURIs(Set<String> URIs, Connector conn, String tableName) throws AccumuloException, AccumuloSecurityException, TableNotFoundException{
 		
 		  BatchWriter writer = createWriter(conn, tableName);
-		  for(int i=0;i<URIs.size();i++){
-		  Text rowID = new Text(URIs.get(i));
+		  Iterator<String> iter = URIs.iterator();
+		  while(iter.hasNext()){
+		  Text rowID = new Text(iter.next());
 		  Text colFam = new Text("   ");
 		  Text colQual = new Text("   ");
 	//	  ColumnVisibility colVis = new ColumnVisibility("public");
@@ -85,7 +89,7 @@ public class CreateURITableTest {
 
 	String passWord="root";
 	
-   List<String> list = new ArrayList<String>();
+   Set<String> list = new HashSet<String>();
    
 
 
@@ -135,8 +139,12 @@ public class CreateURITableTest {
     		   String [] pattern = entry.getKey().getRow().toString().split("\\x00");
             list.add(pattern[0]);
     		  }
-	
-   System.out.println("size: "+list.size());	  
+   
+   TableOperations ops = conn1.tableOperations();
+        if (!ops.exists(tableURI)) {
+            ops.create(tableURI);
+       }
+   System.out.println("size: "+list.size());
    addURIs(list,conn1,tableURI);
    	  
 	final long end = System.currentTimeMillis();
