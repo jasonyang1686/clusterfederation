@@ -157,16 +157,7 @@ public class OverlapList {
  	//Insert data  
  	      for (int i=0;i<studentID;i++){
  		     at.addData("http://www.Department0.University2.edu/UndergraduateStudent"+i, rowValue);
- 	      }
- 	//      for (int i=0;i<studentID;i++){
-// 		     at.addData("http://www.Department0.University3.edu/UndergraduateStudent"+i, rowValue);
- 	//      }
- 	//      for (int i=0;i<studentID;i++){
- 	//	     at.addData("http://www.Department0.University2.edu/GraduateStudent"+i, rowValue);
- 	 //     }
- 	 //     for (int i=0;i<studentID;i++){
- 	//	     at.addData("http://www.Department0.University3.edu/GraduateStudent"+i, rowValue);
- 	 //     }	      
+ 	      }      
  	      
            at.addData(course15, rowValue);
      //      at.addData(course16, rowValue);
