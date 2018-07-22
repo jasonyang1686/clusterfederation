@@ -29,6 +29,7 @@ import org.apache.accumulo.core.client.Instance;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
@@ -74,8 +75,8 @@ public class CreateOverlapTest {
 	public static void main(String[] args) throws Exception {
 		String instanceName = "dev";
 	   String tableURI ="URI_index";
-		String tableNewURI15 = "new_URI_index_15";
-		String tableNewURI35 = "new_URI_index_35";
+		String tableNewURI31 = "new_URI_index_31";
+		String tableNewURI51 = "new_URI_index_51";
 		String tableOverlap ="rya_overlap";
 
 		
@@ -101,37 +102,41 @@ public class CreateOverlapTest {
 		
    	List<String>overlap = new ArrayList<String>();
    	
-   	Scanner scan5 =  conn5.createScanner(tableURI, new Authorizations());
-   	Scanner scan15 =  conn1.createScanner(tableNewURI15, new Authorizations());
-   	Scanner scan35 =  conn3.createScanner(tableNewURI35, new Authorizations());
+   	Scanner scan1 =  conn1.createScanner(tableURI, new Authorizations());
+   	Scanner scan31 =  conn3.createScanner(tableNewURI31, new Authorizations());
+   	Scanner scan51 =  conn5.createScanner(tableNewURI51, new Authorizations());
    	
 
-   	Iterator<Map.Entry<Key,Value>> iterator15 = scan15.iterator();
-   	Iterator<Map.Entry<Key,Value>> iterator35 = scan35.iterator();
+   	Iterator<Map.Entry<Key,Value>> iterator31 = scan31.iterator();
+   	Iterator<Map.Entry<Key,Value>> iterator51 = scan51.iterator();
    	
-   	  while (iterator15.hasNext()) {
-   		   Map.Entry<Key,Value> entry15 = iterator15.next();
-   		   String key15 = entry15.getKey().getRow().toString();
-   			scan5.setRange(Range.exact(key15));
-   	   	Iterator<Map.Entry<Key,Value>> iterator5 = scan5.iterator();
-   	   	  if (iterator5.hasNext()) {
-   	   		  if(key15.contains("http"))
-   	   		 overlap.add(key15); 
+   	  while (iterator31.hasNext()) {
+   		   Map.Entry<Key,Value> entry31 = iterator31.next();
+   		   String key31 = entry31.getKey().getRow().toString();
+   			scan1.setRange(Range.exact(key31));
+   	   	Iterator<Map.Entry<Key,Value>> iterator1 = scan1.iterator();
+   	   	  if (iterator1.hasNext()) {
+   	   		  if(key31.contains("http")&& !(key31.contains("org")))
+   	   		 overlap.add(key31); 
    	   	  }
    	  }
    	  
-   	  while (iterator35.hasNext()) {
-  		   Map.Entry<Key,Value> entry35 = iterator35.next();
-  		   String key35 = entry35.getKey().getRow().toString();
-  			scan5.setRange(Range.exact(key35));
-  	   	Iterator<Map.Entry<Key,Value>> iterator5 = scan5.iterator();
-  	   	  if (iterator5.hasNext()) {
-  	   		 if(key35.contains("http"))
-  	   		 overlap.add(key35); 
+   	  while (iterator51.hasNext()) {
+  		   Map.Entry<Key,Value> entry51 = iterator51.next();
+  		   String key51 = entry51.getKey().getRow().toString();
+  			scan1.setRange(Range.exact(key51));
+  	   	Iterator<Map.Entry<Key,Value>> iterator1 = scan1.iterator();
+  	   	  if (iterator1.hasNext()) {
+             if(key51.contains("http") && !(key51.contains("org")))
+  	   		 overlap.add(key51); 
   	   	  }
   	  }
-     	System.out.println("size: "+overlap.size());  
-     	addURIs(overlap, conn5, tableOverlap);  
+   	System.out.println("size: "+overlap.size());  
+	   TableOperations ops = conn1.tableOperations();
+      if (!ops.exists(tableOverlap)) {
+          ops.create(tableOverlap);
+     }
+     	addURIs(overlap, conn1, tableOverlap);  
      	
    	final long end = System.currentTimeMillis();
    	
