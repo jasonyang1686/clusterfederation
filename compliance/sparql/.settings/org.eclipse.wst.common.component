@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="sesame-sparql-compliance-2.7.17-SNAPSHOT">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="sesame-model-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-model/sesame-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sparql-testsuite-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-sparql-testsuite/sesame-sparql-testsuite">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-trig-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-trig/sesame-rio-trig">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-sparqljson-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryresultio-sparqljson/sesame-queryresultio-sparqljson">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-text-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryresultio-text/sesame-queryresultio-text">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-api-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-api/sesame-rio-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-turtle-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-turtle/sesame-rio-turtle">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-datatypes-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-datatypes/sesame-rio-datatypes">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-languages-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-languages/sesame-rio-languages">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-rdfxml-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-rdfxml/sesame-rio-rdfxml">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-query-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-query/sesame-query">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-api-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryresultio-api/sesame-queryresultio-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-sparqlxml-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryresultio-sparqlxml/sesame-queryresultio-sparqlxml">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-api-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryparser-api/sesame-queryparser-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryalgebra-model-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryalgebra-model/sesame-queryalgebra-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-sparql-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryparser-sparql/sesame-queryparser-sparql">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-api-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-api/sesame-repository-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-dataset-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-dataset/sesame-repository-dataset">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-contextaware-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-contextaware/sesame-repository-contextaware">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-sail-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-sail/sesame-repository-sail">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-api-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-sail-api/sesame-sail-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-memory-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-sail-memory/sesame-sail-memory">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-inferencer-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-sail-inferencer/sesame-sail-inferencer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-serql-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryparser-serql/sesame-queryparser-serql">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryalgebra-evaluation-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-queryalgebra-evaluation/sesame-queryalgebra-evaluation">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-sparql-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-sparql/sesame-repository-sparql">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-util-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-util/sesame-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-federation-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-sail-federation/sesame-sail-federation">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-http-protocol-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-http-protocol/sesame-http-protocol">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-ntriples-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-rio-ntriples/sesame-rio-ntriples">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-manager-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-manager/sesame-repository-manager">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-event-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-event/sesame-repository-event">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-http-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-repository-http/sesame-repository-http">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-http-client-2.7.17-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sesame-http-client/sesame-http-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/prj/sesame-http-server?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="sesame-sparql-compliance"/>
+        <property name="java-output-path" value="/sesame-sparql-compliance/target/classes"/>
+    </wb-module>
+</project-modules>

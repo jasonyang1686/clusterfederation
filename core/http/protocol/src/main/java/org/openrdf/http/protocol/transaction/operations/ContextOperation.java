@@ -1,0 +1,64 @@
+/* 
+ * Licensed to Aduna under one or more contributor license agreements.  
+ * See the NOTICE.txt file distributed with this work for additional 
+ * information regarding copyright ownership. 
+ *
+ * Aduna licenses this file to you under the terms of the Aduna BSD 
+ * License (the "License"); you may not use this file except in compliance 
+ * with the License. See the LICENSE.txt file distributed with this work 
+ * for the full License.
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing permissions
+ * and limitations under the License.
+ */
+package org.openrdf.http.protocol.transaction.operations;
+
+import java.util.Arrays;
+
+import org.openrdf.OpenRDFUtil;
+import org.openrdf.model.Resource;
+
+/**
+ * A TransactionOperation that operates on a specific (set of) contexts.
+ * 
+ * @author Arjohn Kampman
+ * @author Leo Sauermann
+ */
+public abstract class ContextOperation implements TransactionOperation {
+
+	protected Resource[] contexts;
+
+	protected ContextOperation(Resource... contexts) {
+		setContexts(contexts);
+	}
+
+	public Resource[] getContexts() {
+		return contexts;
+	}
+
+	public void setContexts(Resource... contexts) {
+		OpenRDFUtil.verifyContextNotNull(contexts);
+
+		this.contexts = contexts;
+	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other instanceof ContextOperation) {
+			ContextOperation o = (ContextOperation)other;
+			return Arrays.deepEquals(getContexts(), o.getContexts());
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Arrays.deepHashCode(getContexts());
+	}
+}
