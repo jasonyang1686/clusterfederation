@@ -36,7 +36,7 @@ public class OverlapListQuery2 {
         OverlapList at = new OverlapList(zkServer,instanceName);
        
         String userName="root";
-        String passWord="root"; 
+        String passWord="root";
         
         at.getConnection(userName, passWord);
         at.selectTable(tableName);

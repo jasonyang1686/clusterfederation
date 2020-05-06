@@ -40,8 +40,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Union multiple (possibly remote) Repositories into a single RDF store.
  * 
- * @author James Leigh
- * @author Arjohn Kampman
  */
 public class ClusterFederation extends Federation{
 	private static final Logger LOGGER = LoggerFactory
@@ -144,9 +142,7 @@ public ClusterFederation(String zkServer){
 		try {
 			for (Repository member : members) {
 				connections.add(member.getConnection());
-			}
-	//		return new ReadOnlyClusterConnection(this, connections);
-			
+			}			
 			return readOnly ? new ReadOnlyClusterConnection(this, connections)
 					: new WritableClusterConnection(this, connections);
 		} catch (RepositoryException e) {

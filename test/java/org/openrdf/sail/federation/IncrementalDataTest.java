@@ -33,6 +33,7 @@ import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
@@ -152,9 +153,9 @@ public class IncrementalDataTest {
 		
 
 		List<String>triple = new ArrayList<String>();
-		for (int i=12;i<13;i++){
+		for (int i=13;i<14;i++){
 
-		for (int j=270;j<271;j++){
+	for (int j=270;j<370;j++){
 	//	triple.add("http://www.Department"+i+".University2.edu/UndergraduateStudent"+j);
 		triple.add("http://www.Department"+i+".University3.edu/UndergraduateStudent"+j);
 	//	triple.add("http://www.Department"+i+".University4.edu/UndergraduateStudent"+j);
@@ -179,9 +180,13 @@ public class IncrementalDataTest {
 		String passWord="root";
 		
 
-	 	   
+	   final long start = System.currentTimeMillis();	 
 		Instance inst1 = new ZooKeeperInstance(instanceName, zkServer1);
 		Connector conn1 = inst1.getConnector(userName, passWord);
+		TableOperations ops = conn1.tableOperations();
+      if (!ops.exists(tableNewURI)) {
+          ops.create(tableNewURI);
+     }
 		Scanner scan1NewURI =  conn1.createScanner(tableNewURI, new Authorizations());
 		Scanner scan1URI =  conn1.createScanner(tableURI, new Authorizations());
 		
@@ -198,7 +203,7 @@ public class IncrementalDataTest {
       List<String>incrementalData= new ArrayList<String>();
 	   try {
 	//   final long start = System.currentTimeMillis();	
-		   final long start = System.currentTimeMillis();	 
+ 
 	 
 	   	
 

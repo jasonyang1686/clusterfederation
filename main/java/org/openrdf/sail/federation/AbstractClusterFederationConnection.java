@@ -7,7 +7,18 @@ import info.aduna.iteration.ExceptionConvertingIteration;
 import info.aduna.iteration.Iteration;
 import info.aduna.iteration.UnionIteration;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,6 +52,7 @@ import org.openrdf.query.algebra.evaluation.impl.ConjunctiveConstraintSplitter;
 import org.openrdf.query.algebra.evaluation.impl.ConstantOptimizer;
 import org.openrdf.query.algebra.evaluation.impl.DisjunctiveConstraintOptimizer;
 import org.openrdf.query.algebra.evaluation.impl.EvaluationStrategyImpl;
+import org.openrdf.query.algebra.evaluation.impl.FilterOptimizer;
 import org.openrdf.query.algebra.evaluation.impl.SameTermFilterOptimizer;
 import org.openrdf.query.impl.EmptyBindingSet;
 import org.openrdf.repository.RepositoryConnection;
@@ -50,6 +62,7 @@ import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.federation.Federation;
 import org.openrdf.sail.federation.PrefixHashSet;
+import org.openrdf.sail.federation.evaluation.ClusterFederationStrategy;
 import org.openrdf.sail.federation.evaluation.FederationStrategy;
 import org.openrdf.sail.federation.optimizers.EmptyPatternOptimizer;
 import org.openrdf.sail.federation.optimizers.FederationJoinOptimizer;
@@ -66,8 +79,6 @@ import org.slf4j.LoggerFactory;
  * Unions the results from multiple {@link RepositoryConnection} into one
  * {@link SailConnection}.
  * 
- * @author James Leigh
- * @author Arjohn Kampman
  */
 abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 
@@ -95,7 +106,7 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
    private Iterator<Entry<Key, org.apache.accumulo.core.data.Value>> iterator;
 
 	public AbstractClusterFederationConnection(ClusterFederation federation,
-			List<RepositoryConnection> members) {
+			List<RepositoryConnection> members)  {
 		super(new SailBase() {
 
 			public boolean isWritable() throws SailException {
@@ -165,7 +176,28 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 			   includeSet.add(entry.getKey().getRow().toString());
 
 			  }
-			 
+		/*
+			String outputPath="/home/vagrant/share/count.txt";
+		   FileOutputStream fos;
+		   Date date = new Date();
+			try {
+			
+				fos = new FileOutputStream(outputPath, true);
+				OutputStreamWriter osw = new OutputStreamWriter(fos);  
+				BufferedWriter bw = new BufferedWriter(osw); 
+				bw.write(new Timestamp(date.getTime())+"\n");
+			   bw.close();
+			   fos.close();
+			}
+			catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			 */
 		this.federation = federation;
 
 		valueFactory = ValueFactoryImpl.getInstance();
@@ -296,8 +328,8 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 			final Resource subj, final URI pred, final Value obj,
 			final boolean includeInferred, final Resource... contexts)
 			throws SailException {
-		
-	//	System.out.println("cluster federation get statement internal");
+				
+		System.out.println("cluster federation get statement internal");
 		
 		CloseableIteration<? extends Statement, SailException> cursor = union(new Function<Statement>() {
 
@@ -309,14 +341,12 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 			}
 		});
    
-		if (!federation.isDistinct() && !isLocal(pred)) {
+	//	if (!federation.isDistinct() && !isLocal(pred)) {
 			// Filter any duplicates
 
 	  	cursor = new IntersectOverlapList<Statement, SailException>(cursor, includeSet);			
-		cursor = new DistinctIteration<Statement, SailException>(cursor);	
-			
-			
-		}
+		//cursor = new DistinctIteration<Statement, SailException>(cursor);				
+	//	}
 		
 		return cursor;
 	}
@@ -326,7 +356,7 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 			TupleExpr query, Dataset dataset, BindingSet bindings, boolean inf)
 			throws SailException {
 		TripleSource tripleSource = new FederationTripleSource(inf);
-		EvaluationStrategyImpl strategy = new FederationStrategy(federation,
+		EvaluationStrategyImpl strategy = new ClusterFederationStrategy(federation,
 				tripleSource, dataset);
 		TupleExpr qry = optimize(query, dataset, bindings, strategy);
 		try {
@@ -387,13 +417,13 @@ abstract class AbstractClusterFederationConnection extends SailConnectionBase {
 		new QueryModelPruner().optimize(query, dataset, bindings);
 
 		new QueryMultiJoinOptimizer().optimize(query, dataset, bindings);
-		// new FilterOptimizer().optimize(query, dataset, bindings);
+	   new FilterOptimizer().optimize(query, dataset, bindings);
 
 		new EmptyPatternOptimizer(members).optimize(query, dataset, bindings);
 		boolean distinct = federation.isDistinct();
 		PrefixHashSet local = federation.getLocalPropertySpace();
-		new FederationJoinOptimizer(members, distinct, local).optimize(query,
-				dataset, bindings);
+//		new FederationJoinOptimizer(members, distinct, local).optimize(query,
+//				dataset, bindings);
 		new OwnedTupleExprPruner().optimize(query, dataset, bindings);
 		new QueryModelPruner().optimize(query, dataset, bindings);
 		new QueryMultiJoinOptimizer().optimize(query, dataset, bindings);

@@ -64,10 +64,9 @@ import org.openrdf.sail.config.SailConfigException;
 import org.openrdf.sail.config.SailImplConfigBase;
 
 /**
- * Lists the members of a federation and which properties describe a resource
+ * Lists the members of a cluster federation and which properties describe a resource
  * subject in a unique member.
  * 
- * @author James Leigh
  */
 public class ClusterFederationConfig extends SailImplConfigBase {
 

@@ -16,8 +16,6 @@
  */
 package org.openrdf.sail.federation;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import org.openrdf.model.Value;
@@ -27,13 +25,7 @@ import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.config.RepositoryConfig;
-import org.openrdf.repository.config.RepositoryImplConfig;
 import org.openrdf.repository.http.HTTPRepository;
-import org.openrdf.repository.http.config.HTTPRepositoryConfig;
-import org.openrdf.repository.manager.RemoteRepositoryManager;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailRepositoryConnection;
 
 /**
  *
@@ -59,6 +51,7 @@ public class ComparisonFederationQueryTest {
 //	private static final String repositoryID_4="RyaAccumulo_4_sec";
 //	private static final String repositoryID_1234="Federation1234";
 	private static final String repositoryID_123456 = "Federation123456";
+//	private static final String repositoryID_1234 = "Federation1234";
 	
 
 	public static void main(String[] args) throws Exception {
@@ -83,6 +76,7 @@ public class ComparisonFederationQueryTest {
 	//		   Repository repo1234 =new HTTPRepository(SESAME_SERVER_2, repositoryID_1234);
 	//			RepositoryConnection con1234=null;
 		
+	//	Repository repo123456 =new HTTPRepository(SESAME_SERVER_2, repositoryID_1234);
 		Repository repo123456 =new HTTPRepository(SESAME_SERVER_2, repositoryID_123456);
 		RepositoryConnection con123456=null;
 
@@ -108,25 +102,161 @@ public class ComparisonFederationQueryTest {
 
 					final long start = System.currentTimeMillis();
 		// execute query
+					/*
+					String query = "PREFIX foaf: 		<http://xmlns.com/foaf/0.1/> "+
+							"PREFIX geonames: 	<http://www.geonames.org/ontology#> "+
+							"PREFIX mo:   		<http://purl.org/ontology/mo/> "+
+							"PREFIX nytimes:         <http://data.nytimes.com/elements/> "+
+							"PREFIX owl: <http://www.w3.org/2002/07/owl#> "+
+							"SELECT DISTINCT ?artist ?name ?location ?anylocation "+
+							"WHERE { "+
+							"	     ?artist a mo:MusicArtist ; "+
+							"         foaf:name ?name ; "+
+							"		 foaf:based_near ?location . "+
+							"         ?location geonames:parentFeature ?locationName . "+
+							"         ?locationName geonames:name ?anylocation . "+
+							"         ?nytLocation owl:sameAs ?location. "+
+							"         ?nytLocation nytimes:topicPage ?news "+
+							"OPTIONAL "+
+							"{ "+
+							"         ?locationName geonames:name 'Islamic Republic of Afghanistan' . "+
+							"} "+
+							"} ";
+					*/
+					
+					/*
+					String query = "PREFIX linkedmdb: <http://data.linkedmdb.org/resource/movie/> "+
+"prefix owl: <http://www.w3.org/2002/07/owl#> "+
+"PREFIX dcterms: <http://purl.org/dc/terms/> "+
+"PREFIX purl: <http://purl.org/dc/terms/> "+
+"PREFIX nytimes: <http://data.nytimes.com/elements/> "+
+"SELECT ?actor ?filmTitle ?news ?variants ?articleCount ?first_use ?latest_use "+
+"WHERE "+ 
+"{ "+
+"?film linkedmdb:actor 			?actor . "+
+"?actor owl:sameAs 			?dbpediaURI. "+
+"?nytURI owl:sameAs 			?dbpediaURI . "+
+"?nytURI nytimes:topicPage 		?news ; "+
+"	nytimes:number_of_variants 	?variants; "+
+"	nytimes:associated_article_count ?articleCount; "+
+"	nytimes:first_use 		?first_use; "+
+"	nytimes:latest_use 		?latest_use . "+
+"?film purl:title 			?filmTitle . "+
+"} "+
+"ORDER BY (?actor) ";
+*/
+					/*
+					String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+							"PREFIX owl: <http://www.w3.org/2002/07/owl#> "+
+							"PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> "+
+							"PREFIX kegg: <http://bio2rdf.org/ns/kegg#> "+
+							"PREFIX chebi: <http://bio2rdf.org/ns/chebi#> "+
+							"PREFIX purl: <http://purl.org/dc/elements/1.1/> "+
+							"PREFIX bio2RDF: <http://bio2rdf.org/ns/bio2rdf#> "+
+							"SELECT ?drug ?keggmass ?drugBankName ?chebiIupacName ?keggDrug "+
+							"WHERE "+ 
+							"{ "+
+							"?drug rdf:type drugbank:drugs . "+
+							"?drug drugbank:keggCompoundId ?keggDrug . "+
+							"?keggDrug bio2RDF:mass ?keggmass . "+
+							"?drug drugbank:genericName ?drugBankName . "+
+							"?chebiDrug purl:title ?drugBankName . "+
+							"?chebiRef bio2RDF:xRef ?chebiDrug ."+
+							"?chebiRef chebi:iupacName ?chebiIupacName . "+
+							"OPTIONAL { "+
+							 "           ?drug drugbank:inchiIdentifier ?drugbankInchi . "+
+							"			?chebiDrug bio2RDF:inchi ?chebiInchi . "+
+							"			FILTER (?drugbankInchi = ?chebiInchi)  "+
+							"		} "+
+
+							"} ";
+					*/		
+					/*
+					String query ="Prefix dbpedia: <http://dbpedia.org/ontology/> "+
+							"Prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+							"Prefix owl: <http://www.w3.org/2002/07/owl#> "+
+							"Prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> "+
+							"SELECT * WHERE "+
+							"{ "+
+							"?Drug rdf:type dbpedia:Drug . "+
+							"?drugbankDrug owl:sameAs ?Drug . "+
+							"?InteractionName drugbank:interactionDrug1 ?drugbankDrug . "+
+							"?InteractionName drugbank:interactionDrug2 ?drugbankDrug2 . "+
+							"?InteractionName drugbank:text ?IntEffect "+
+							"OPTIONAL "+
+							"{ "+
+							"?drugbankDrug  drugbank:affectedOrganism 'Humans and other mammals'; "+
+							"drugbank:description ?description ; "+
+							"drugbank:structure ?structure ; "+
+							"drugbank:casRegistryNumber ?casRegistryNumber "+
+							"} "+
+							"} "+
+							"ORDER BY (?drugbankDrug) "+
+							"LIMIT 100 ";
+							*/
+					/*
 					String query = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
 							"prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
 							"prefix daml: <http://www.daml.org/2001/03/daml+oil#>"+
 							"prefix ub: <https://rya.apache.org#>"+
 							"SELECT ?X ?Y ?Z "+
-							"WHERE{"+			
-							 "?Z ub:subOrganizationOf ?Y ."+	
-							 "?X ub:memberOf ?Z ."+
-							 "?X ub:undergraduateDegreeFrom ?Y ."+			
+							"WHERE{"+
+							"?Z ub:subOrganizationOf ?Y ."+
+							"?X ub:memberOf ?Z ."+
+							"?X ub:undergraduateDegreeFrom ?Y ."+
+							"?X rdf:type ub:GraduateStudent . "+
 							 "}";
-
+					*/
+					/*
+					String query = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+							 "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+							"prefix daml: <http://www.daml.org/2001/03/daml+oil#>"+
+							"prefix ub: <https://rya.apache.org#>"+
+							"SELECT ?X ?Y "+
+							"WHERE"+ 
+							"{"+
+							 "<http://www.Department0.University0.edu/AssociateProfessor0> "+  
+							  "	ub:teacherOf ?Y ."+
+							  "?X ub:takesCourse ?Y ."+
+							 "}";
+*/
+					
+					String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+							"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+							"PREFIX daml: <http://www.daml.org/2001/03/daml+oil#>"+
+							"PREFIX ub: <https://rya.apache.org#>"+
+							"SELECT ?X ?Y1 ?Y2 ?Y3 "+
+							"WHERE"+
+							"{VALUES ?Professor {ub:FullProfessor ub:AssociateProfessor ub:AssistantProfessor}"+
+							  "?X ub:worksFor <http://www.Department0.University0.edu> ."+
+							  "?X rdf:type ?Professor ."+
+							  "?X ub:name ?Y1 ."+
+							  "?X ub:emailAddress ?Y2 ."+
+							  "?X ub:telephone ?Y3 ." +
+							   "}";
+					
+					/*
+					String query = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+							"prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+							"prefix daml: <http://www.daml.org/2001/03/daml+oil#>"+
+							"prefix ub: <https://rya.apache.org#>"+
+							"SELECT ?X ?Y ?Z "+
+							"WHERE"+
+							"{ "+
+							 "?Y ub:teacherOf ?Z . "+							 
+							 "?X ub:advisor ?Y . "+
+							 "?X ub:takesCourse ?Z. "+
+							 " }";
+					
+					*/
+	   	//		FileOutputStream out = new FileOutputStream("/home/vagrant/result.csv");
+	   	//		SPARQLResultsCSVWriter sparqlWriter = new SPARQLResultsCSVWriter(out);
 					
 					TupleQuery tupleQuery = con123456.prepareTupleQuery(QueryLanguage.SPARQL, query);
 				
 					TupleQueryResult result= tupleQuery.evaluate();
                
-					final long end = System.currentTimeMillis();
-					
-					System.out.println((end-start));
+
 					
 					long count=0;
 					
@@ -135,10 +265,14 @@ public class ComparisonFederationQueryTest {
 					while(result.hasNext()){
 						bindingSet = result.next();
 						Value valueOfX = bindingSet.getValue("X");
-             //     System.out.println("X: "+valueOfX);		
+                  System.out.println("X: "+valueOfX);		
 					count++;
 					}
 					
+					final long end = System.currentTimeMillis();
+
+					
+					System.out.println((end-start));
 					System.out.println("result size: "+count);
 
 					repo123456.shutDown();
@@ -147,7 +281,7 @@ public class ComparisonFederationQueryTest {
 					con123456.close();
 
 			
-				} 
+				}
 			}
 
 }
